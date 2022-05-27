@@ -23,6 +23,7 @@
 		D8C36E362840C24600BDF7A7 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C36E352840C24600BDF7A7 /* Network.swift */; };
 		D8C36E382840C27700BDF7A7 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C36E372840C27700BDF7A7 /* API.swift */; };
 		D8C36E3A2840E68000BDF7A7 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C36E392840E68000BDF7A7 /* CardView.swift */; };
+		D8C36E3C2841091B00BDF7A7 /* EndSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C36E3B2841091A00BDF7A7 /* EndSceneViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		D8C36E352840C24600BDF7A7 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D8C36E372840C27700BDF7A7 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		D8C36E392840E68000BDF7A7 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		D8C36E3B2841091A00BDF7A7 /* EndSceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndSceneViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				D8C36DFD2840BB9100BDF7A7 /* SceneDelegate.swift */,
 				D8C36DFF2840BB9100BDF7A7 /* ViewController.swift */,
 				D8C36E392840E68000BDF7A7 /* CardView.swift */,
+				D8C36E3B2841091A00BDF7A7 /* EndSceneViewController.swift */,
 				D8C36E012840BB9100BDF7A7 /* Main.storyboard */,
 				D8C36E352840C24600BDF7A7 /* Network.swift */,
 				D8C36E372840C27700BDF7A7 /* API.swift */,
@@ -309,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8C36E002840BB9100BDF7A7 /* ViewController.swift in Sources */,
+				D8C36E3C2841091B00BDF7A7 /* EndSceneViewController.swift in Sources */,
 				D8C36DFC2840BB9100BDF7A7 /* AppDelegate.swift in Sources */,
 				D8C36E362840C24600BDF7A7 /* Network.swift in Sources */,
 				D8C36DFE2840BB9100BDF7A7 /* SceneDelegate.swift in Sources */,

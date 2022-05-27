@@ -9,21 +9,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    /*   @IBOutlet weak var popUp: UIView!
-     override func viewDidLoad() {
-     super.viewDidLoad()
-     popUp.layer.cornerRadius = 25
-     var test = Network.shared.apollo.fetch(query: QuotesQuery()){ [weak self] result in
-     switch result {
-     case .failure(let error):
-     print("somethingf faild")
-     case .success(let quotes):
-     print(quotes.data?.quotes[0].quote)
-     }
-     }
-     // Do any additional setup after loading the view.
-     }
-     */
     // MARK: - UI
     lazy var backgroundLayerGradiant: CAGradientLayer = {
         let layer = CAGradientLayer()
@@ -50,7 +35,6 @@ class ViewController: UIViewController {
         label.textColor = .white
         label.font = .systemFont(ofSize: 38)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "{Auteur}"
         label.textAlignment = .center
         return label
     }()
@@ -60,7 +44,7 @@ class ViewController: UIViewController {
         label.textColor = .white
         label.font = .systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "{Citation}"
+        label.numberOfLines = 0
         label.textAlignment = .center
         return label
     }()
@@ -73,14 +57,55 @@ class ViewController: UIViewController {
         return imageView
     }()
     
+    lazy var cardView: CardView = {
+        let view = CardView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 20
+        view.delegate = self
+        return view
+    }()
+    
+    
+    var quotes : [QuotesQuery.Data.Quote]?
+    var index = 0
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        _ = Network.shared.apollo.fetch(query: QuotesQuery()) { [weak self] result in
+            switch result {
+            case .failure(_):
+                print("something failed")
+            case .success(let quotes):
+                self?.quotes = quotes.data?.quotes
+                DispatchQueue.main.async {
+                    self?.fillData()
+                }
+            }
+        }
     }
+    
+    func fillData() {
+        authorLabel.text = quotes?[index].author
+        citationLabel.text = quotes?[index].quote
+        let nbrQuote = quotes?.count ?? 0
+        let percentage : Float = (Float(index + 1) / Float(nbrQuote)) * 100.0
+        cardView.updateValue(nbrQuote: nbrQuote, percentage: percentage)
+        updateEmoji(percentage: percentage)
+    }
+    func updateEmoji(percentage : Float) {
+        if percentage < 40 {
+            emojiImageView.image = UIImage(named: "smiley_sick")
+        } else if percentage >= 40 && percentage < 80 {
+            emojiImageView.image = UIImage(named: "smiley_meh")
+        } else {
+            emojiImageView.image = UIImage(named: "smiley_awe")
+        }
+    }
+    
 }
 
- // MARK: - Private Methods
+// MARK: - Private Methods
 private extension ViewController {
     func setup() {
         setupInterface()
@@ -92,6 +117,8 @@ private extension ViewController {
         view.addSubview(authorLabel)
         view.addSubview(citationLabel)
         view.addSubview(emojiImageView)
+        view.addSubview(cardView)
+        view.bringSubviewToFront(emojiImageView)
     }
     
     func setupConstraints() {
@@ -105,14 +132,32 @@ private extension ViewController {
             citationLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 13),
             citationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             citationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-
+            citationLabel.heightAnchor.constraint(equalToConstant: 120),
+            
             // emojiImageName
             emojiImageView.topAnchor.constraint(equalTo: citationLabel.bottomAnchor, constant: 30),
             emojiImageView.heightAnchor.constraint(equalToConstant: 150),
             emojiImageView.widthAnchor.constraint(equalToConstant: 150),
-            emojiImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            emojiImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            //cardView
+            cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            cardView.topAnchor.constraint(equalTo: emojiImageView.bottomAnchor, constant: -75)
         ])
     }
 }
 
-
+extension ViewController : CardViewDelegate {
+    func nextQuote() {
+        guard index < (quotes?.count ?? 0) - 1 else {
+           let controller = EndSceneViewController()
+            controller.modalPresentationStyle = .fullScreen
+            present(controller, animated: true)
+            return
+        }
+        index += 1
+        fillData()
+    }
+}
